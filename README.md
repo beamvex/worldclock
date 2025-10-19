@@ -88,9 +88,9 @@ The app includes 30+ major cities from around the world:
 - `dev`: Build and run the Electron app
 - `start`: Run the Electron app
 - `package`: Build and package for your current platform
-- `package:linux`: Package for Linux (AppImage and .deb)
-- `package:win`: Package for Windows (installer and portable)
-- `package:mac`: Package for macOS (DMG and ZIP)
+- `package:linux`: Package for Linux (AppImage)
+- `package:win`: Package for Windows (portable .exe)
+- `package:mac`: Package for macOS (.app in ZIP)
 - `lint`: Check code for issues
 - `format`: Format code with Prettier
 - `type-check`: Run TypeScript type checker
@@ -98,25 +98,25 @@ The app includes 30+ major cities from around the world:
 
 ## Packaging as Executable
 
-To create a standalone executable:
+To create a single portable executable:
 
 ```bash
 # Package for your current platform
 npm run package
 
 # Or package for specific platforms
-npm run package:linux   # Creates AppImage and .deb
-npm run package:win     # Creates installer and portable .exe
-npm run package:mac     # Creates .dmg and .zip
+npm run package:linux   # Creates AppImage (single executable)
+npm run package:win     # Creates portable .exe (single executable)
+npm run package:mac     # Creates .app in ZIP (single executable)
 ```
 
-The packaged apps will be in the `release/` directory.
+The executable will be in the `release/` directory.
 
 ### Output Formats
 
-- **Linux**: AppImage (portable) and .deb (Debian/Ubuntu installer)
-- **Windows**: NSIS installer and portable .exe
-- **macOS**: DMG installer and ZIP archive
+- **Linux**: AppImage - Single portable executable, no installation needed
+- **Windows**: Portable .exe - Single executable, no installation needed
+- **macOS**: .app in ZIP - Extract and run, no installation needed
 
 ## Technologies Used
 

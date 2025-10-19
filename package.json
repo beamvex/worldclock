@@ -33,7 +33,7 @@
   "license": "MIT",
   "build": {
     "appId": "com.worldclock.app",
-    "productName": "World Clock",
+    "productName": "WorldClock",
     "files": [
       "dist/**/*",
       "src/index.html",
@@ -43,23 +43,14 @@
       "output": "release"
     },
     "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
+      "target": "AppImage",
       "category": "Utility"
     },
     "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ]
+      "target": "portable"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
+      "target": "zip",
       "category": "public.app-category.utilities"
     }
   },
