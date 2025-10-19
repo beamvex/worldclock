@@ -44,6 +44,7 @@ const cities: CityData[] = [
 ];
 
 let clocks: Clock[] = [];
+let currentSize: string = 'medium';
 
 // Load clocks from localStorage
 function loadClocks(): void {
@@ -64,6 +65,33 @@ function loadClocks(): void {
 // Save clocks to localStorage
 function saveClocks(): void {
   localStorage.setItem('worldClocks', JSON.stringify(clocks));
+}
+
+// Load size preference
+function loadSize(): void {
+  const saved = localStorage.getItem('clockSize');
+  if (saved) {
+    currentSize = saved;
+  }
+  applySize();
+}
+
+// Save size preference
+function saveSize(size: string): void {
+  currentSize = size;
+  localStorage.setItem('clockSize', size);
+  applySize();
+}
+
+// Apply size class to grid
+function applySize(): void {
+  const grid = document.getElementById('clocksGrid');
+  if (!grid) return;
+
+  grid.className = 'clocks-grid';
+  if (currentSize !== 'medium') {
+    grid.classList.add(`size-${currentSize}`);
+  }
 }
 
 // Generate unique ID
@@ -198,6 +226,21 @@ function populateCitySelect(): void {
     });
 }
 
+// Initialize size selector
+function initSizeSelector(): void {
+  const sizeSelect = document.getElementById('sizeSelect') as HTMLSelectElement;
+  if (!sizeSelect) return;
+
+  // Set initial value
+  sizeSelect.value = currentSize;
+
+  // Handle size changes
+  sizeSelect.addEventListener('change', (event) => {
+    const target = event.target as HTMLSelectElement;
+    saveSize(target.value);
+  });
+}
+
 // Initialize modal
 function initModal(): void {
   const modal = document.getElementById('modal');
@@ -238,9 +281,11 @@ function initModal(): void {
 // Initialize app
 function init(): void {
   loadClocks();
+  loadSize();
   populateCitySelect();
   renderClocks();
   initModal();
+  initSizeSelector();
 
   // Update clocks every second
   setInterval(updateClocks, 1000);

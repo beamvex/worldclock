@@ -87,10 +87,36 @@ The app includes 30+ major cities from around the world:
 - `build:watch`: Watch mode for development
 - `dev`: Build and run the Electron app
 - `start`: Run the Electron app
+- `package`: Build and package for your current platform
+- `package:linux`: Package for Linux (AppImage and .deb)
+- `package:win`: Package for Windows (installer and portable)
+- `package:mac`: Package for macOS (DMG and ZIP)
 - `lint`: Check code for issues
 - `format`: Format code with Prettier
 - `type-check`: Run TypeScript type checker
 - `clean`: Remove build artifacts
+
+## Packaging as Executable
+
+To create a standalone executable:
+
+```bash
+# Package for your current platform
+npm run package
+
+# Or package for specific platforms
+npm run package:linux   # Creates AppImage and .deb
+npm run package:win     # Creates installer and portable .exe
+npm run package:mac     # Creates .dmg and .zip
+```
+
+The packaged apps will be in the `release/` directory.
+
+### Output Formats
+
+- **Linux**: AppImage (portable) and .deb (Debian/Ubuntu installer)
+- **Windows**: NSIS installer and portable .exe
+- **macOS**: DMG installer and ZIP archive
 
 ## Technologies Used
 
