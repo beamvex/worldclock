@@ -45,6 +45,7 @@ const cities: CityData[] = [
 
 let clocks: Clock[] = [];
 let currentSize: string = 'medium';
+let convertedTime: Date | null = null;
 
 // Load clocks from localStorage
 function loadClocks(): void {
@@ -100,8 +101,8 @@ function generateId(): string {
 }
 
 // Format time for a timezone
-function formatTime(timezone: string): string {
-  const now = new Date();
+function formatTime(timezone: string, baseTime?: Date): string {
+  const now = baseTime || new Date();
   return now.toLocaleTimeString('en-US', {
     timeZone: timezone,
     hour: '2-digit',
@@ -112,8 +113,8 @@ function formatTime(timezone: string): string {
 }
 
 // Format date for a timezone
-function formatDate(timezone: string): string {
-  const now = new Date();
+function formatDate(timezone: string, baseTime?: Date): string {
+  const now = baseTime || new Date();
   return now.toLocaleDateString('en-US', {
     timeZone: timezone,
     weekday: 'long',
@@ -131,6 +132,39 @@ function getTimezoneOffset(timezone: string): number {
   return (tzDate.getTime() - utcDate.getTime()) / 60000;
 }
 
+// Get hour for a timezone
+function getHourForTimezone(timezone: string, baseTime?: Date): number {
+  const now = baseTime || new Date();
+  const timeString = now.toLocaleTimeString('en-US', {
+    timeZone: timezone,
+    hour: '2-digit',
+    hour12: false,
+  });
+  return parseInt(timeString.split(':')[0], 10);
+}
+
+// Get color class based on time of day
+function getTimeColorClass(timezone: string, baseTime?: Date): string {
+  const hour = getHourForTimezone(timezone, baseTime);
+  
+  // Night: 22:00 - 06:00 (10 PM - 6 AM) - black
+  if (hour >= 22 || hour < 6) {
+    return 'time-night';
+  }
+  // Early morning: 06:00 - 09:00 (6 AM - 9 AM) - yellow
+  else if (hour >= 6 && hour < 9) {
+    return 'time-early';
+  }
+  // Working hours: 09:00 - 17:00 (9 AM - 5 PM) - green
+  else if (hour >= 9 && hour < 17) {
+    return 'time-work';
+  }
+  // Late evening: 17:00 - 22:00 (5 PM - 10 PM) - yellow
+  else {
+    return 'time-late';
+  }
+}
+
 // Sort clocks by timezone offset
 function sortClocksByTimezone(clocksToSort: Clock[]): Clock[] {
   return [...clocksToSort].sort((a, b) => {
@@ -142,11 +176,12 @@ function sortClocksByTimezone(clocksToSort: Clock[]): Clock[] {
 
 // Create clock card HTML
 function createClockCard(clock: Clock): string {
-  const time = formatTime(clock.timezone);
-  const date = formatDate(clock.timezone);
+  const time = formatTime(clock.timezone, convertedTime || undefined);
+  const date = formatDate(clock.timezone, convertedTime || undefined);
+  const colorClass = getTimeColorClass(clock.timezone, convertedTime || undefined);
 
   return `
-    <div class="clock-card" data-id="${clock.id}">
+    <div class="clock-card ${colorClass}" data-id="${clock.id}">
       <div class="clock-header">
         <div class="city-name">${clock.city}</div>
         <button class="remove-btn" onclick="removeClock('${clock.id}')">Remove</button>
@@ -180,11 +215,15 @@ function updateClocks(): void {
     const dateDisplay = card.querySelector('.date-display');
 
     if (timeDisplay) {
-      timeDisplay.textContent = formatTime(clock.timezone);
+      timeDisplay.textContent = formatTime(clock.timezone, convertedTime || undefined);
     }
     if (dateDisplay) {
-      dateDisplay.textContent = formatDate(clock.timezone);
+      dateDisplay.textContent = formatDate(clock.timezone, convertedTime || undefined);
     }
+
+    // Update color class based on current time
+    const newColorClass = getTimeColorClass(clock.timezone, convertedTime || undefined);
+    card.className = 'clock-card ' + newColorClass;
   });
 }
 
@@ -241,6 +280,43 @@ function initSizeSelector(): void {
   });
 }
 
+// Initialize time converter
+function initTimeConverter(): void {
+  const timeInput = document.getElementById('localTimeInput') as HTMLInputElement;
+  const convertBtn = document.getElementById('convertBtn');
+  const clearBtn = document.getElementById('clearConvertBtn');
+
+  if (!timeInput || !convertBtn || !clearBtn) return;
+
+  convertBtn.addEventListener('click', () => {
+    const timeValue = timeInput.value;
+    if (!timeValue) return;
+
+    // Parse the time input (HH:MM format)
+    const [hours, minutes] = timeValue.split(':').map(Number);
+    
+    // Create a date object with today's date and the specified time
+    const now = new Date();
+    convertedTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes,
+      0
+    );
+
+    // Re-render all clocks with the converted time
+    renderClocks();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    convertedTime = null;
+    timeInput.value = '';
+    renderClocks();
+  });
+}
+
 // Initialize modal
 function initModal(): void {
   const modal = document.getElementById('modal');
@@ -286,9 +362,14 @@ function init(): void {
   renderClocks();
   initModal();
   initSizeSelector();
+  initTimeConverter();
 
-  // Update clocks every second
-  setInterval(updateClocks, 1000);
+  // Update clocks every second (only if not in conversion mode)
+  setInterval(() => {
+    if (!convertedTime) {
+      updateClocks();
+    }
+  }, 1000);
 }
 
 // Start app when DOM is ready

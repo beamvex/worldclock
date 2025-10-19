@@ -22,6 +22,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .size-controls {
@@ -54,6 +56,74 @@ body {
 .size-select option {
     background: #1a1a2e;
     color: #fff;
+}
+
+.time-converter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-converter label {
+    font-size: 0.95rem;
+    color: #a0a0a0;
+    white-space: nowrap;
+}
+
+.time-input {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.time-input:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: rgba(102, 126, 234, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.convert-btn,
+.clear-convert-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.convert-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.convert-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+}
+
+.clear-convert-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: #a0a0a0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.clear-convert-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .clocks-grid {
@@ -147,6 +217,37 @@ body {
     right: 0;
     height: 4px;
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: background 0.5s ease;
+}
+
+/* Time-based color themes */
+.clock-card.time-night {
+    background: rgba(20, 20, 30, 0.6);
+    border-color: rgba(100, 100, 120, 0.3);
+}
+
+.clock-card.time-night::before {
+    background: linear-gradient(90deg, #2c2c3e 0%, #1a1a2e 100%);
+}
+
+.clock-card.time-work {
+    background: rgba(34, 139, 34, 0.15);
+    border-color: rgba(34, 200, 34, 0.3);
+}
+
+.clock-card.time-work::before {
+    background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+}
+
+.clock-card.time-early,
+.clock-card.time-late {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.3);
+}
+
+.clock-card.time-early::before,
+.clock-card.time-late::before {
+    background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
 }
 
 .clock-card:hover {
