@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <button id="addClockBtn" class="add-btn">+ Add Clock</button>
+        </div>
+        
+        <div class="clocks-grid" id="clocksGrid">
+            <!-- Clocks will be dynamically inserted here -->
+        </div>
+        
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add New Clock</h2>
+                <div class="form-group">
+                    <label for="citySelect">Select City:</label>
+                    <select id="citySelect">
+                        <option value="">-- Choose a city --</option>
+                    </select>
+                </div>
+                <button id="confirmAddBtn" class="confirm-btn">Add Clock</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../dist/renderer.js"></script>
+</body>
+</html>
