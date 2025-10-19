@@ -282,72 +282,37 @@ function initSizeSelector(): void {
 
 // Initialize time converter
 function initTimeConverter(): void {
-  const hourScroll = document.getElementById('hourScroll');
-  const minuteScroll = document.getElementById('minuteScroll');
+  const hourSelect = document.getElementById('hourSelect') as HTMLSelectElement;
+  const minuteSelect = document.getElementById('minuteSelect') as HTMLSelectElement;
   const convertBtn = document.getElementById('convertBtn');
   const clearBtn = document.getElementById('clearConvertBtn');
 
-  if (!hourScroll || !minuteScroll || !convertBtn || !clearBtn) return;
+  if (!hourSelect || !minuteSelect || !convertBtn || !clearBtn) return;
 
-  // Populate hour scroll (00-23)
+  // Populate hour dropdown (00-23)
   for (let i = 0; i < 24; i++) {
-    const hourDiv = document.createElement('div');
-    hourDiv.className = 'time-option';
-    hourDiv.textContent = i.toString().padStart(2, '0');
-    hourDiv.dataset.value = i.toString();
-    hourScroll.appendChild(hourDiv);
+    const option = document.createElement('option');
+    option.value = i.toString();
+    option.textContent = i.toString().padStart(2, '0');
+    hourSelect.appendChild(option);
   }
 
-  // Populate minute scroll (00-59)
+  // Populate minute dropdown (00-59)
   for (let i = 0; i < 60; i++) {
-    const minuteDiv = document.createElement('div');
-    minuteDiv.className = 'time-option';
-    minuteDiv.textContent = i.toString().padStart(2, '0');
-    minuteDiv.dataset.value = i.toString();
-    minuteScroll.appendChild(minuteDiv);
+    const option = document.createElement('option');
+    option.value = i.toString();
+    option.textContent = i.toString().padStart(2, '0');
+    minuteSelect.appendChild(option);
   }
 
   // Set default to current time
   const now = new Date();
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
-  
-  // Scroll to current time
-  const hourOption = hourScroll.querySelector(`[data-value="${currentHour}"]`) as HTMLElement;
-  const minuteOption = minuteScroll.querySelector(`[data-value="${currentMinute}"]`) as HTMLElement;
-  
-  if (hourOption) {
-    hourScroll.scrollTop = hourOption.offsetTop - hourScroll.offsetHeight / 2 + hourOption.offsetHeight / 2;
-  }
-  if (minuteOption) {
-    minuteScroll.scrollTop = minuteOption.offsetTop - minuteScroll.offsetHeight / 2 + minuteOption.offsetHeight / 2;
-  }
-
-  // Handle selection on click
-  hourScroll.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains('time-option')) {
-      hourScroll.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
-      target.classList.add('selected');
-    }
-  });
-
-  minuteScroll.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains('time-option')) {
-      minuteScroll.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
-      target.classList.add('selected');
-    }
-  });
+  hourSelect.value = now.getHours().toString();
+  minuteSelect.value = now.getMinutes().toString();
 
   convertBtn.addEventListener('click', () => {
-    const selectedHour = hourScroll.querySelector('.time-option.selected') as HTMLElement;
-    const selectedMinute = minuteScroll.querySelector('.time-option.selected') as HTMLElement;
-
-    if (!selectedHour || !selectedMinute) return;
-
-    const hours = parseInt(selectedHour.dataset.value || '0', 10);
-    const minutes = parseInt(selectedMinute.dataset.value || '0', 10);
+    const hours = parseInt(hourSelect.value, 10);
+    const minutes = parseInt(minuteSelect.value, 10);
     
     // Create a date object with today's date and the specified time
     const now = new Date();
@@ -366,8 +331,9 @@ function initTimeConverter(): void {
 
   clearBtn.addEventListener('click', () => {
     convertedTime = null;
-    hourScroll.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
-    minuteScroll.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
+    const now = new Date();
+    hourSelect.value = now.getHours().toString();
+    minuteSelect.value = now.getMinutes().toString();
     renderClocks();
   });
 }
