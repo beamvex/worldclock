@@ -18,8 +18,16 @@
                 </select>
             </div>
             <div class="time-converter">
-                <label for="localTimeInput">Convert local time:</label>
-                <input type="time" id="localTimeInput" class="time-input">
+                <label>Convert local time:</label>
+                <div class="time-picker">
+                    <div class="time-scroll-container">
+                        <div class="time-scroll" id="hourScroll"></div>
+                    </div>
+                    <span class="time-separator">:</span>
+                    <div class="time-scroll-container">
+                        <div class="time-scroll" id="minuteScroll"></div>
+                    </div>
+                </div>
                 <button id="convertBtn" class="convert-btn">Convert</button>
                 <button id="clearConvertBtn" class="clear-convert-btn">Clear</button>
             </div>
