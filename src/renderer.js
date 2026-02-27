@@ -1,16 +1,5 @@
-interface Clock {
-  id: string;
-  city: string;
-  timezone: string;
-}
-
-interface CityData {
-  name: string;
-  timezone: string;
-}
-
 // Comprehensive list of cities with their timezones
-const cities: CityData[] = [
+const cities = [
   // North America
   { name: 'Anchorage', timezone: 'America/Anchorage' },
   { name: 'Atlanta', timezone: 'America/New_York' },
@@ -41,9 +30,9 @@ const cities: CityData[] = [
   { name: 'Vancouver', timezone: 'America/Vancouver' },
   { name: 'Washington DC', timezone: 'America/New_York' },
   { name: 'Winnipeg', timezone: 'America/Winnipeg' },
-  
+
   // Central & South America
-  { name: 'Bogotá', timezone: 'America/Bogota' },
+  { name: 'Bogot\u00e1', timezone: 'America/Bogota' },
   { name: 'Buenos Aires', timezone: 'America/Argentina/Buenos_Aires' },
   { name: 'Caracas', timezone: 'America/Caracas' },
   { name: 'Lima', timezone: 'America/Lima' },
@@ -52,8 +41,8 @@ const cities: CityData[] = [
   { name: 'Quito', timezone: 'America/Guayaquil' },
   { name: 'Rio de Janeiro', timezone: 'America/Sao_Paulo' },
   { name: 'Santiago', timezone: 'America/Santiago' },
-  { name: 'São Paulo', timezone: 'America/Sao_Paulo' },
-  
+  { name: 'S\u00e3o Paulo', timezone: 'America/Sao_Paulo' },
+
   // Europe
   { name: 'Amsterdam', timezone: 'Europe/Amsterdam' },
   { name: 'Athens', timezone: 'Europe/Athens' },
@@ -93,7 +82,7 @@ const cities: CityData[] = [
   { name: 'Vilnius', timezone: 'Europe/Vilnius' },
   { name: 'Warsaw', timezone: 'Europe/Warsaw' },
   { name: 'Zurich', timezone: 'Europe/Zurich' },
-  
+
   // Africa
   { name: 'Accra', timezone: 'Africa/Accra' },
   { name: 'Addis Ababa', timezone: 'Africa/Addis_Ababa' },
@@ -110,7 +99,7 @@ const cities: CityData[] = [
   { name: 'Lagos', timezone: 'Africa/Lagos' },
   { name: 'Nairobi', timezone: 'Africa/Nairobi' },
   { name: 'Tunis', timezone: 'Africa/Tunis' },
-  
+
   // Middle East
   { name: 'Abu Dhabi', timezone: 'Asia/Dubai' },
   { name: 'Amman', timezone: 'Asia/Amman' },
@@ -125,7 +114,7 @@ const cities: CityData[] = [
   { name: 'Riyadh', timezone: 'Asia/Riyadh' },
   { name: 'Tehran', timezone: 'Asia/Tehran' },
   { name: 'Tel Aviv', timezone: 'Asia/Tel_Aviv' },
-  
+
   // Asia
   { name: 'Almaty', timezone: 'Asia/Almaty' },
   { name: 'Bangkok', timezone: 'Asia/Bangkok' },
@@ -162,7 +151,7 @@ const cities: CityData[] = [
   { name: 'Vladivostok', timezone: 'Asia/Vladivostok' },
   { name: 'Yangon', timezone: 'Asia/Yangon' },
   { name: 'Yekaterinburg', timezone: 'Asia/Yekaterinburg' },
-  
+
   // Oceania
   { name: 'Adelaide', timezone: 'Australia/Adelaide' },
   { name: 'Auckland', timezone: 'Pacific/Auckland' },
@@ -179,12 +168,12 @@ const cities: CityData[] = [
   { name: 'Wellington', timezone: 'Pacific/Auckland' },
 ];
 
-let clocks: Clock[] = [];
-let currentSize: string = 'medium';
-let convertedTime: Date | null = null;
+let clocks = [];
+let currentSize = 'medium';
+let convertedTime = null;
 
 // Load clocks from localStorage
-function loadClocks(): void {
+function loadClocks() {
   const saved = localStorage.getItem('worldClocks');
   if (saved) {
     clocks = JSON.parse(saved);
@@ -200,12 +189,12 @@ function loadClocks(): void {
 }
 
 // Save clocks to localStorage
-function saveClocks(): void {
+function saveClocks() {
   localStorage.setItem('worldClocks', JSON.stringify(clocks));
 }
 
 // Load size preference
-function loadSize(): void {
+function loadSize() {
   const saved = localStorage.getItem('clockSize');
   if (saved) {
     currentSize = saved;
@@ -214,30 +203,30 @@ function loadSize(): void {
 }
 
 // Save size preference
-function saveSize(size: string): void {
+function saveSize(size) {
   currentSize = size;
   localStorage.setItem('clockSize', size);
   applySize();
 }
 
 // Apply size class to grid
-function applySize(): void {
+function applySize() {
   const grid = document.getElementById('clocksGrid');
   if (!grid) return;
 
   grid.className = 'clocks-grid';
   if (currentSize !== 'medium') {
-    grid.classList.add(`size-${currentSize}`);
+    grid.classList.add('size-' + currentSize);
   }
 }
 
 // Generate unique ID
-function generateId(): string {
+function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 // Format time for a timezone
-function formatTime(timezone: string, baseTime?: Date): string {
+function formatTime(timezone, baseTime) {
   const now = baseTime || new Date();
   return now.toLocaleTimeString('en-US', {
     timeZone: timezone,
@@ -249,7 +238,7 @@ function formatTime(timezone: string, baseTime?: Date): string {
 }
 
 // Format date for a timezone
-function formatDate(timezone: string, baseTime?: Date): string {
+function formatDate(timezone, baseTime) {
   const now = baseTime || new Date();
   return now.toLocaleDateString('en-US', {
     timeZone: timezone,
@@ -261,7 +250,7 @@ function formatDate(timezone: string, baseTime?: Date): string {
 }
 
 // Get timezone offset in minutes
-function getTimezoneOffset(timezone: string): number {
+function getTimezoneOffset(timezone) {
   const now = new Date();
   const utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
   const tzDate = new Date(now.toLocaleString('en-US', { timeZone: timezone }));
@@ -269,7 +258,7 @@ function getTimezoneOffset(timezone: string): number {
 }
 
 // Get hour for a timezone
-function getHourForTimezone(timezone: string, baseTime?: Date): number {
+function getHourForTimezone(timezone, baseTime) {
   const now = baseTime || new Date();
   const timeString = now.toLocaleTimeString('en-US', {
     timeZone: timezone,
@@ -280,9 +269,9 @@ function getHourForTimezone(timezone: string, baseTime?: Date): number {
 }
 
 // Get color class based on time of day
-function getTimeColorClass(timezone: string, baseTime?: Date): string {
+function getTimeColorClass(timezone, baseTime) {
   const hour = getHourForTimezone(timezone, baseTime);
-  
+
   // Night: 22:00 - 06:00 (10 PM - 6 AM) - black
   if (hour >= 22 || hour < 6) {
     return 'time-night';
@@ -302,7 +291,7 @@ function getTimeColorClass(timezone: string, baseTime?: Date): string {
 }
 
 // Sort clocks by timezone offset
-function sortClocksByTimezone(clocksToSort: Clock[]): Clock[] {
+function sortClocksByTimezone(clocksToSort) {
   return [...clocksToSort].sort((a, b) => {
     const offsetA = getTimezoneOffset(a.timezone);
     const offsetB = getTimezoneOffset(b.timezone);
@@ -311,40 +300,36 @@ function sortClocksByTimezone(clocksToSort: Clock[]): Clock[] {
 }
 
 // Create clock card HTML
-function createClockCard(clock: Clock): string {
+function createClockCard(clock) {
   const time = formatTime(clock.timezone, convertedTime || undefined);
   const date = formatDate(clock.timezone, convertedTime || undefined);
   const colorClass = getTimeColorClass(clock.timezone, convertedTime || undefined);
 
-  return `
-    <div class="clock-card ${colorClass}" data-id="${clock.id}">
-      <div class="clock-header">
-        <div class="city-name">${clock.city}</div>
-        <button class="remove-btn" onclick="removeClock('${clock.id}')">Remove</button>
-      </div>
-      <div class="time-display">${time}</div>
-      <div class="date-display">${date}</div>
-      <div class="timezone-display">${clock.timezone}</div>
-    </div>
-  `;
+  return '<div class="clock-card ' + colorClass + '" data-id="' + clock.id + '">' +
+    '<div class="clock-header">' +
+      '<div class="city-name">' + clock.city + '</div>' +
+      '<button class="remove-btn" onclick="removeClock(\'' + clock.id + '\')">Remove</button>' +
+    '</div>' +
+    '<div class="time-display">' + time + '</div>' +
+    '<div class="date-display">' + date + '</div>' +
+    '<div class="timezone-display">' + clock.timezone + '</div>' +
+  '</div>';
 }
 
 // Render all clocks
-function renderClocks(): void {
+function renderClocks() {
   const grid = document.getElementById('clocksGrid');
   if (!grid) return;
 
   const sortedClocks = sortClocksByTimezone(clocks);
-  grid.innerHTML = sortedClocks.map((clock) => createClockCard(clock)).join('');
+  grid.innerHTML = sortedClocks.map(function(clock) { return createClockCard(clock); }).join('');
 }
 
 // Update all clock times
-function updateClocks(): void {
+function updateClocks() {
   const sortedClocks = sortClocksByTimezone(clocks);
-  sortedClocks.forEach((clock) => {
-    const card = document.querySelector(
-      `.clock-card[data-id="${clock.id}"]`
-    ) as HTMLElement;
+  sortedClocks.forEach(function(clock) {
+    const card = document.querySelector('.clock-card[data-id="' + clock.id + '"]');
     if (!card) return;
 
     const timeDisplay = card.querySelector('.time-display');
@@ -364,11 +349,11 @@ function updateClocks(): void {
 }
 
 // Add clock
-function addClock(city: string, timezone: string): void {
-  const newClock: Clock = {
+function addClock(city, timezone) {
+  const newClock = {
     id: generateId(),
-    city,
-    timezone,
+    city: city,
+    timezone: timezone,
   };
 
   clocks.push(newClock);
@@ -377,23 +362,20 @@ function addClock(city: string, timezone: string): void {
 }
 
 // Remove clock
-function removeClock(id: string): void {
-  clocks = clocks.filter((clock) => clock.id !== id);
+function removeClock(id) {
+  clocks = clocks.filter(function(clock) { return clock.id !== id; });
   saveClocks();
   renderClocks();
 }
 
-// Make removeClock available globally
-(window as any).removeClock = removeClock;
-
 // Populate city select dropdown
-function populateCitySelect(): void {
-  const select = document.getElementById('citySelect') as HTMLSelectElement;
+function populateCitySelect() {
+  const select = document.getElementById('citySelect');
   if (!select) return;
 
   cities
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((city) => {
+    .sort(function(a, b) { return a.name.localeCompare(b.name); })
+    .forEach(function(city) {
       const option = document.createElement('option');
       option.value = JSON.stringify(city);
       option.textContent = city.name;
@@ -402,24 +384,23 @@ function populateCitySelect(): void {
 }
 
 // Initialize size selector
-function initSizeSelector(): void {
-  const sizeSelect = document.getElementById('sizeSelect') as HTMLSelectElement;
+function initSizeSelector() {
+  const sizeSelect = document.getElementById('sizeSelect');
   if (!sizeSelect) return;
 
   // Set initial value
   sizeSelect.value = currentSize;
 
   // Handle size changes
-  sizeSelect.addEventListener('change', (event) => {
-    const target = event.target as HTMLSelectElement;
-    saveSize(target.value);
+  sizeSelect.addEventListener('change', function(event) {
+    saveSize(event.target.value);
   });
 }
 
 // Initialize time converter
-function initTimeConverter(): void {
-  const hourSelect = document.getElementById('hourSelect') as HTMLSelectElement;
-  const minuteSelect = document.getElementById('minuteSelect') as HTMLSelectElement;
+function initTimeConverter() {
+  const hourSelect = document.getElementById('hourSelect');
+  const minuteSelect = document.getElementById('minuteSelect');
   const convertBtn = document.getElementById('convertBtn');
   const clearBtn = document.getElementById('clearConvertBtn');
 
@@ -446,10 +427,10 @@ function initTimeConverter(): void {
   hourSelect.value = now.getHours().toString();
   minuteSelect.value = now.getMinutes().toString();
 
-  convertBtn.addEventListener('click', () => {
+  convertBtn.addEventListener('click', function() {
     const hours = parseInt(hourSelect.value, 10);
     const minutes = parseInt(minuteSelect.value, 10);
-    
+
     // Create a date object with today's date and the specified time
     const now = new Date();
     convertedTime = new Date(
@@ -465,7 +446,7 @@ function initTimeConverter(): void {
     renderClocks();
   });
 
-  clearBtn.addEventListener('click', () => {
+  clearBtn.addEventListener('click', function() {
     convertedTime = null;
     const now = new Date();
     hourSelect.value = now.getHours().toString();
@@ -475,35 +456,35 @@ function initTimeConverter(): void {
 }
 
 // Initialize modal
-function initModal(): void {
+function initModal() {
   const modal = document.getElementById('modal');
   const addBtn = document.getElementById('addClockBtn');
   const closeBtn = document.querySelector('.close');
   const confirmBtn = document.getElementById('confirmAddBtn');
-  const citySelect = document.getElementById('citySelect') as HTMLSelectElement;
+  const citySelect = document.getElementById('citySelect');
 
   if (!modal || !addBtn || !closeBtn || !confirmBtn || !citySelect) return;
 
-  addBtn.addEventListener('click', () => {
+  addBtn.addEventListener('click', function() {
     modal.style.display = 'block';
   });
 
-  closeBtn.addEventListener('click', () => {
+  closeBtn.addEventListener('click', function() {
     modal.style.display = 'none';
     citySelect.value = '';
   });
 
-  window.addEventListener('click', (event) => {
+  window.addEventListener('click', function(event) {
     if (event.target === modal) {
       modal.style.display = 'none';
       citySelect.value = '';
     }
   });
 
-  confirmBtn.addEventListener('click', () => {
+  confirmBtn.addEventListener('click', function() {
     const selectedValue = citySelect.value;
     if (selectedValue) {
-      const cityData: CityData = JSON.parse(selectedValue);
+      const cityData = JSON.parse(selectedValue);
       addClock(cityData.name, cityData.timezone);
       modal.style.display = 'none';
       citySelect.value = '';
@@ -512,7 +493,7 @@ function initModal(): void {
 }
 
 // Initialize app
-function init(): void {
+function init() {
   loadClocks();
   loadSize();
   populateCitySelect();
@@ -522,7 +503,7 @@ function init(): void {
   initTimeConverter();
 
   // Update clocks every second (only if not in conversion mode)
-  setInterval(() => {
+  setInterval(function() {
     if (!convertedTime) {
       updateClocks();
     }
