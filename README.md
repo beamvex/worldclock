@@ -19,6 +19,7 @@ A beautiful Tauri desktop application for tracking time across multiple time zon
 ### Prerequisites
 
 - [Rust](https://www.rust-lang.org/tools/install) (latest stable)
+- [Tauri CLI](https://tauri.app/start/): `cargo install tauri-cli --version "^2"`
 - System dependencies for Tauri:
   - **Linux**: `libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libgtk-3-dev`
   - **macOS**: Xcode Command Line Tools
@@ -27,6 +28,9 @@ A beautiful Tauri desktop application for tracking time across multiple time zon
 ### Development
 
 ```bash
+# Install Tauri CLI (one-time setup)
+cargo install tauri-cli --version "^2"
+
 # Run in development mode
 cargo tauri dev
 
